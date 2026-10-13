@@ -1,0 +1,10 @@
+node_modules
+dist
+*.local
+*.tsbuildinfo
+.DS_Store
+.env
+.env.*
+!.env.example
+# Configuración local de herramientas de vista previa
+.claude/

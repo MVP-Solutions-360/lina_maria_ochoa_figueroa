@@ -1,0 +1,105 @@
+/*
+ * Tokens semánticos de color. Una sola estructura de componentes: el tema claro es el
+ * predeterminado y el oscuro se activa únicamente con la preferencia del sistema
+ * operativo (prefers-color-scheme). No hay selector manual ni JavaScript: sin destello.
+ */
+:root {
+  color-scheme: light;
+
+  --bg: #f4f0e8;
+  --surface: #ffffff;
+  --surface-muted: #eae4d9;
+  --surface-overlay: #fbf9f4;
+  --text: #171819;
+  --text-muted: #55534f;
+  --border: #d8d0c3;
+  --border-strong: #b9ae9b;
+
+  --accent: #7a5c2b;
+  --accent-strong: #5f4519;
+  --accent-soft: #c8a96b;
+
+  --brand-bmq: #167bcb;
+  --link: #0f5f9f;
+  --link-hover: #0a4a7e;
+
+  --btn-primary-bg: #171819;
+  --btn-primary-text: #f4f0e8;
+  --btn-primary-hover: #2e2f31;
+  --btn-secondary-border: #171819;
+  --btn-secondary-hover-bg: #171819;
+  --btn-secondary-hover-text: #f4f0e8;
+  --btn-bmq-bg: #1070ba;
+  --btn-bmq-hover: #0c5c9a;
+  --btn-disabled-bg: #e3ddd1;
+  --btn-disabled-text: #6b6860;
+
+  --nav-bg: rgb(244 240 232 / 0.94);
+  --focus: #0f5f9f;
+  --selection-bg: #c8a96b;
+  --selection-text: #171819;
+
+  /* Banda oscura (secciones de contraste) */
+  --band-bg: #171819;
+  --band-surface: #222321;
+  --band-text: #f4f0e8;
+  --band-muted: #c7c4bd;
+  --band-border: #42403b;
+  --band-accent: #d8ba7a;
+  --band-link: #6db4ee;
+  --band-btn-bg: #f4f0e8;
+  --band-btn-text: #171819;
+  --band-btn-hover: #ffffff;
+  --band-focus: #6db4ee;
+}
+
+@media (prefers-color-scheme: dark) {
+:root {
+  color-scheme: dark;
+
+  --bg: #171819;
+  --surface: #222321;
+  --surface-muted: #2b2b28;
+  --surface-overlay: #1d1e1f;
+  --text: #f4f0e8;
+  --text-muted: #c7c4bd;
+  --border: #42403b;
+  --border-strong: #5a5750;
+
+  --accent: #d8ba7a;
+  --accent-strong: #e5c98f;
+  --accent-soft: #c8a96b;
+
+  --brand-bmq: #167bcb;
+  --link: #6db4ee;
+  --link-hover: #9accf5;
+
+  --btn-primary-bg: #d8ba7a;
+  --btn-primary-text: #171819;
+  --btn-primary-hover: #e5c98f;
+  --btn-secondary-border: #d8ba7a;
+  --btn-secondary-hover-bg: #d8ba7a;
+  --btn-secondary-hover-text: #171819;
+  --btn-bmq-bg: #1070ba;
+  --btn-bmq-hover: #0c5c9a;
+  --btn-disabled-bg: #2b2b28;
+  --btn-disabled-text: #8e8b84;
+
+  --nav-bg: rgb(23 24 25 / 0.94);
+  --focus: #9accf5;
+  --selection-bg: #d8ba7a;
+  --selection-text: #171819;
+
+  --band-bg: #0f1011;
+  --band-surface: #1a1b1c;
+  --band-text: #f4f0e8;
+  --band-muted: #c7c4bd;
+  --band-border: #3a3834;
+  --band-accent: #d8ba7a;
+  --band-link: #6db4ee;
+  --band-btn-bg: #d8ba7a;
+  --band-btn-text: #171819;
+  --band-btn-hover: #e5c98f;
+  --band-focus: #9accf5;
+}
+}

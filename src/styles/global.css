@@ -1,0 +1,215 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/playfair-display';
+@import '@fontsource-variable/playfair-display/wght-italic.css';
+@import './tokens.css';
+
+/* Los componentes usan utilidades como `bg-bg`, `text-muted`, `border-line`. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-overlay: var(--surface-overlay);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-bmq: var(--brand-bmq);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-btn: var(--btn-primary-bg);
+  --color-btn-text: var(--btn-primary-text);
+  --color-btn-hover: var(--btn-primary-hover);
+  --color-band: var(--band-bg);
+  --color-band-surface: var(--band-surface);
+  --color-band-ink: var(--band-text);
+  --color-band-muted: var(--band-muted);
+  --color-band-line: var(--band-border);
+  --color-band-accent: var(--band-accent);
+  --color-band-link: var(--band-link);
+
+  --font-serif: 'Playfair Display Variable', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* `on-band:` aplica utilidades dentro de las secciones oscuras de contraste. */
+@custom-variant on-band (:is(.on-band &));
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--selection-text);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .on-band :focus-visible {
+    outline-color: var(--band-focus);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Contenedor editorial con márgenes amplios */
+  .container-editorial {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-editorial {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-editorial {
+      padding-inline: 3rem;
+    }
+  }
+
+  .section-y {
+    padding-block: 4.5rem;
+  }
+  @media (min-width: 1024px) {
+    .section-y {
+      padding-block: 7.5rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .on-band .eyebrow {
+    color: var(--band-accent);
+  }
+
+  .on-band {
+    background-color: var(--band-bg);
+    color: var(--band-text);
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--border);
+  }
+  .on-band .rule {
+    background: var(--band-border);
+  }
+}
+
+/* Entrada sutil del hero; desactivada con prefers-reduced-motion */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* Difumina los bordes recortados del medio rostro (inferior e izquierdo). */
+.fade-edges {
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 96%),
+    linear-gradient(to right, transparent 0, #000 14%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 96%),
+    linear-gradient(to right, transparent 0, #000 14%);
+  mask-composite: intersect;
+}
+
+/* Barra de progreso de la escena activa del hero */
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-progress {
+  transform-origin: left;
+  animation: hero-progress linear forwards;
+}
+
+.hero-progress-paused {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-progress {
+    animation: none;
+    transform: scaleX(1);
+  }
+  .rise-in {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
