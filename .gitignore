@@ -8,3 +8,6 @@ dist
 !.env.example
 # Configuración local de herramientas de vista previa
 .claude/
+# Originales pesados (PNG/JPEG de fotos y logos) usados para generar los WebP de public/.
+# No se versionan: copia de seguridad fuera del repositorio (Documentos\respaldo_originales_lina_2026-10-14).
+originales/
