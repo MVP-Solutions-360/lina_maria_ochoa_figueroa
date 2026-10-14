@@ -36,6 +36,15 @@
 }
 
 /* `on-band:` aplica utilidades dentro de las secciones oscuras de contraste. */
+/*
+ * Punto de corte propio del hero de la portada (56 rem = 896 px). Con «Sitio para computadoras» los
+ * móviles usan un ancho virtual de ~980 px, por debajo de `lg` (1024 px): el hero adopta la composición
+ * de escritorio (texto a la izquierda, rostro a la derecha) desde aquí. Uso: `hero:` y `max-hero:`.
+ */
+@theme {
+  --breakpoint-hero: 56rem;
+}
+
 @custom-variant on-band (:is(.on-band &));
 
 @layer base {

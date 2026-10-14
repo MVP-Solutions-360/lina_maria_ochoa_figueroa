@@ -29,7 +29,7 @@ export function HomeHero() {
     <section
       aria-roledescription="carrusel"
       aria-label="Presentación"
-      className="relative grid min-h-[calc(100svh-4.5rem)] overflow-hidden border-b border-line lg:min-h-[max(40rem,calc(100svh-4.5rem))]"
+      className="relative grid min-h-[min(calc(100svh-4.5rem),44rem)] overflow-hidden border-b border-line hero:min-h-[max(40rem,min(calc(100svh-4.5rem),64rem))]"
     >
       {[HeroIdentityScene, HeroMessageScene].map((Scene, i) => (
         <div

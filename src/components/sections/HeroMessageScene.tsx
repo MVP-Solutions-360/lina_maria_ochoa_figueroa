@@ -12,14 +12,14 @@ interface HeroMessageSceneProps {
 /** Escena 2: propuesta. Titular editorial junto a fotografía en color. */
 export function HeroMessageScene({ active }: HeroMessageSceneProps) {
   return (
-    <div className="container-editorial grid h-full min-h-[inherit] items-center gap-12 pb-24 pt-12 lg:grid-cols-12 lg:gap-16 lg:pt-8">
-      <div className="lg:col-span-7">
+    <div className="container-editorial grid h-full min-h-[inherit] items-center gap-12 pb-24 pt-12 hero:grid-cols-12 hero:gap-16 hero:pt-8">
+      <div className="hero:col-span-7">
         <p className={cx('eyebrow mb-8', riseClass(active))} style={riseStyle(active, 150)}>
           Derecho médico · Liderazgo · Visión estratégica
         </p>
 
         <h2
-          className={cx('text-[2.75rem] leading-[1.04] sm:text-6xl lg:text-[5rem]', riseClass(active))}
+          className={cx('text-[2.75rem] leading-[1.04] sm:text-6xl hero:text-[3.5rem] lg:text-[5rem]', riseClass(active))}
           style={riseStyle(active, 300)}
         >
           Derecho médico.
@@ -51,7 +51,7 @@ export function HeroMessageScene({ active }: HeroMessageSceneProps) {
 
       <div
         className={cx(
-          'hidden lg:col-span-5 lg:block',
+          'hidden hero:col-span-5 hero:block',
           'transition-[opacity,transform] duration-[1600ms] ease-out',
           active ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0',
         )}
@@ -60,7 +60,7 @@ export function HeroMessageScene({ active }: HeroMessageSceneProps) {
           photo={photos.hallway}
           aspect="aspect-[4/5]"
           sizes="40vw"
-          className="mx-auto max-h-[calc(100svh-12rem)] max-w-md lg:max-w-none"
+          className="mx-auto max-h-[calc(100svh-12rem)] max-w-md hero:max-w-none"
         />
       </div>
     </div>
