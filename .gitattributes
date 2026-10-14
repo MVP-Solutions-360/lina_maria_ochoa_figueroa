@@ -1,0 +1,3 @@
+# Line endings: the repository stores LF; Git decides which files are text.
+# With core.autocrlf=true on Windows, working copies stay CRLF and blobs stay LF.
+* text=auto
