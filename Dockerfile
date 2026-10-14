@@ -25,7 +25,9 @@ COPY src ./src
 RUN npm run build
 
 # --- Etapa 2: servidor web -------------------------------------------------------------------
-FROM nginx:1.27-alpine
+# Rama ESTABLE de Nginx (nginx.org: 1.30.x) sobre Alpine. El tag 1.30-alpine sigue los parches de esa
+# rama cada vez que se reconstruye con `docker compose build --pull`; 1.27 ya no recibe soporte.
+FROM nginx:1.30-alpine
 
 # Sustituye el sitio por defecto de la imagen por la configuración del proyecto.
 RUN rm -f /etc/nginx/conf.d/default.conf

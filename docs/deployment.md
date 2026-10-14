@@ -16,7 +16,7 @@ el contenedor en ese punto **sin tocar NPM ni otros sitios** del servidor.
 Archivos de despliegue: `Dockerfile`, `deploy/nginx.conf`, `compose.yaml`, `.dockerignore`, `.env.example`.
 
 > **Qué hace la imagen.** Etapa 1: `node:22-alpine` ejecuta `npm ci` (reproducible desde `package-lock.json`) y
-> `npm run build`. Etapa 2: `nginx:1.27-alpine` recibe **solo** `dist/` y `deploy/nginx.conf`. No contiene código
+> `npm run build`. Etapa 2: `nginx:1.30-alpine` (rama estable de Nginx sobre Alpine) recibe **solo** `dist/` y `deploy/nginx.conf`. No contiene código
 > fuente, `.git`, `node_modules`, imágenes originales ni archivos personales. El dominio (`SITE_URL`) está fijado en
 > `src/config/site.ts` y se incorpora al compilar; no hay variables de entorno de aplicación ni secretos.
 
@@ -185,6 +185,8 @@ docker compose ps
 ```
 
 Repite las comprobaciones de los pasos 6 y 7.
+
+Para recibir además los parches de la imagen base de Nginx (`nginx:1.30-alpine`), construye con `docker compose build --pull` antes de `docker compose up -d`.
 
 ## Volver a la versión anterior
 
