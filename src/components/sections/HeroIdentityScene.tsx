@@ -1,6 +1,9 @@
 import { photos } from '../../config/images'
-import { PRACTICE_START_YEAR, yearsOfPractice } from '../../content/professional'
+import { PRACTICE_START_YEAR, credentialInstitutions, yearsOfPractice } from '../../content/professional'
 import { cx } from '../../lib/cx'
+import { Button } from '../ui/Button'
+import { TextLink } from '../ui/TextLink'
+import { InstitutionEmblem } from '../ui/InstitutionEmblem'
 import { riseClass, riseStyle } from './heroMotion'
 
 interface HeroIdentitySceneProps {
@@ -13,31 +16,45 @@ export function HeroIdentityScene({ active }: HeroIdentitySceneProps) {
 
   return (
     <div className="relative flex h-full min-h-[inherit] flex-col lg:block">
-      <div className="container-editorial relative z-10 pb-6 pt-12 lg:flex lg:h-full lg:items-center lg:pb-24 lg:pt-8">
-        <div className="max-w-2xl lg:w-[58%]">
-          <p className={cx('eyebrow mb-7', riseClass(active))} style={riseStyle(active, 150)}>
+      {/* El contenedor no captura el cursor para que la foto (detrás) reaccione al pasar el mouse. */}
+      <div className="container-editorial pointer-events-none relative z-10 pb-6 pt-12 lg:flex lg:h-full lg:items-center lg:pb-24 lg:pt-8">
+        <div className="pointer-events-auto max-w-2xl lg:w-[58%]">
+          <p className={cx('eyebrow mb-7', riseClass(active))} style={riseStyle(active, 1500)}>
             Abogada · Derecho médico
           </p>
 
           <h1
             className={cx('text-[3rem] leading-[1.02] sm:text-7xl lg:text-[5.75rem]', riseClass(active))}
-            style={riseStyle(active, 300)}
+            style={riseStyle(active, 1900)}
           >
-            Lina María
+            Lina María{' '}
             <br />
             <span className="italic text-accent">Ochoa Figueroa</span>
           </h1>
 
           <p
             className={cx('mt-7 max-w-md text-lg leading-snug text-ink sm:text-xl', riseClass(active))}
-            style={riseStyle(active, 500)}
+            style={riseStyle(active, 2300)}
           >
             Abogada especialista en Derecho Médico y directiva del sector salud.
           </p>
+          <p
+            className={cx('mt-3 max-w-md text-base leading-snug text-muted', riseClass(active))}
+            style={riseStyle(active, 2300)}
+          >
+            CEO de{' '}
+            <TextLink to="/blindaje-medico-quirurgico">Blindaje Médico Quirúrgico (BMQ)</TextLink>.
+          </p>
+
+          <div className={cx('mt-8', riseClass(active))} style={riseStyle(active, 2600)}>
+            <Button to="/perfil-profesional" variant="secondary">
+              Ver perfil profesional
+            </Button>
+          </div>
 
           <dl
             className={cx('mt-10 flex gap-10 border-t border-line-strong pt-6 sm:gap-14', riseClass(active))}
-            style={riseStyle(active, 700)}
+            style={riseStyle(active, 2900)}
           >
             <div>
               <dt className="text-xs font-medium uppercase tracking-[0.18em] text-muted">Ejercicio profesional desde</dt>
@@ -51,6 +68,29 @@ export function HeroIdentityScene({ active }: HeroIdentitySceneProps) {
               </dd>
             </div>
           </dl>
+
+          {/* Sellos de las universidades donde se formó (logos oficiales, en /images/universidades). */}
+          <div className={cx('mt-8', riseClass(active))} style={riseStyle(active, 3300)}>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted">Formación en</p>
+            <ul className="mt-3 flex flex-wrap gap-3 sm:gap-4">
+              {credentialInstitutions.map((institution) =>
+                institution.emblem ? (
+                  <li key={institution.name}>
+                    <span
+                      title={institution.name}
+                      className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-md bg-white p-1.5 ring-1 ring-accent-soft/50 sm:h-16 sm:w-16 sm:p-2 lg:h-20 lg:w-20 [@media(prefers-color-scheme:dark)]:bg-black"
+                    >
+                      <InstitutionEmblem
+                        institution={institution}
+                        loading="eager"
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </span>
+                  </li>
+                ) : null,
+              )}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -58,19 +98,24 @@ export function HeroIdentityScene({ active }: HeroIdentitySceneProps) {
       <div
         className={cx(
           'relative mt-2 h-[24rem] overflow-hidden sm:h-[30rem] lg:absolute lg:inset-y-0 lg:right-0 lg:mt-0 lg:h-auto lg:w-[42%]',
-          'transition-[opacity,transform] duration-[1600ms] ease-out',
+          'transition-[opacity,transform] duration-[2200ms] ease-out max-lg:duration-700 motion-reduce:duration-[0.01ms]',
           active ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0',
         )}
+        // La foto aparece primero; los textos entran después (ver delays arriba).
+        style={{ transitionDelay: active ? '200ms' : '0ms' }}
       >
         <img
           src={photo.src}
+          srcSet={photo.srcSet}
+          sizes="(min-width: 1024px) 42vw, 60vw"
           alt={photo.alt}
           width={photo.width}
           height={photo.height}
           loading="eager"
           decoding="async"
           fetchPriority="high"
-          className="fade-edges absolute right-0 top-0 h-[118%] w-auto max-w-none lg:-top-[2%] lg:h-[122%]"
+          // Escala de grises por defecto; al acercar el cursor (o presionar en pantallas táctiles) recupera el color.
+          className="fade-edges absolute right-0 top-0 h-[118%] w-auto max-w-none cursor-default grayscale contrast-[1.08] transition-[filter] duration-700 ease-out hover:grayscale-0 hover:contrast-100 active:grayscale-0 active:contrast-100 lg:-top-[2%] lg:h-[122%]"
         />
       </div>
     </div>

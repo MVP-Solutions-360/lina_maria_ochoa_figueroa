@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Pause, Play } from 'lucide-react'
 import { useSceneCycle } from '../../hooks/useSceneCycle'
 import { cx } from '../../lib/cx'
@@ -5,7 +6,7 @@ import { HeroIdentityScene } from './HeroIdentityScene'
 import { HeroMessageScene } from './HeroMessageScene'
 
 const scenes = [
-  { id: 'identidad', label: 'Identidad', duration: 8000 },
+  { id: 'identidad', label: 'Identidad', duration: 12000 },
   { id: 'propuesta', label: 'Propuesta', duration: 10000 },
 ]
 
@@ -15,6 +16,14 @@ const scenes = [
  */
 export function HomeHero() {
   const { index, select, playing, toggle, duration } = useSceneCycle(scenes.map((s) => s.duration))
+
+  // Entrada inicial: el contenido nace oculto y se revela tras el primer pintado, para que
+  // la foto y luego los textos se animen también al cargar la página (no sólo al cambiar de escena).
+  const [entered, setEntered] = useState(false)
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => requestAnimationFrame(() => setEntered(true)))
+    return () => cancelAnimationFrame(frame)
+  }, [])
 
   return (
     <section
@@ -36,7 +45,7 @@ export function HomeHero() {
             index === i ? 'z-10 opacity-100' : 'pointer-events-none z-0 opacity-0',
           )}
         >
-          <Scene active={index === i} />
+          <Scene active={entered && index === i} />
         </div>
       ))}
 

@@ -1,6 +1,7 @@
 import { photos } from '../../config/images'
 import { site } from '../../config/site'
 import { Button } from '../ui/Button'
+import { TextLink } from '../ui/TextLink'
 import { EditorialImage } from '../ui/EditorialImage'
 
 export function BmqSection() {
@@ -30,11 +31,12 @@ export function BmqSection() {
           <p className="mt-5 max-w-2xl border-l-2 border-link pl-5 text-[0.9375rem] leading-relaxed text-muted">
             Mi marca personal y BMQ tienen propósitos relacionados, pero diferenciados: desde mi
             ejercicio profesional acompaño asuntos jurídicos y estratégicos; desde BMQ, lidero una
-            organización con su propia propuesta corporativa.
+            organización con su propia propuesta corporativa, que mantiene su{' '}
+            <TextLink href={site.bmqUrl}>sitio web corporativo</TextLink>.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Button href={site.bmqUrl} variant="bmq">
-              Conoce Blindaje Médico Quirúrgico
+              Visitar el sitio oficial de BMQ
             </Button>
             <Button to="/blindaje-medico-quirurgico" variant="text">
               Mi rol como CEO

@@ -56,17 +56,6 @@ export const photos = {
     position: '50% 15%',
   },
   /** Pasillo moderno, vestuario gris verdoso. Sin marca integrada. */
-  /**
-   * Transitorio: foto usada por las páginas anteriores a la migración de imágenes. Se retira (junto con
-   * public/images/imagen_4.png) en el mismo commit que actualiza esas páginas.
-   */
-  desk: {
-    src: '/images/imagen_4.png',
-    alt: 'Lina María Ochoa Figueroa sentada en su escritorio, apoyando el rostro sobre la mano.',
-    width: 543,
-    height: 675,
-    position: '50% 100%',
-  },
   hallway: {
     src: '/images/imagen_1.webp',
     srcSet: '/images/imagen_1-360.webp 360w, /images/imagen_1.webp 543w',

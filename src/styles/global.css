@@ -170,6 +170,29 @@
   animation-delay: var(--rise-delay, 0ms);
 }
 
+/* Entrada escalonada del hero (ver components/sections/heroMotion.ts) */
+.hero-rise {
+  transition-property: opacity, transform;
+  transition-timing-function: ease-out;
+  transition-duration: 1600ms;
+  transition-delay: var(--rise-delay, 0ms);
+}
+
+/* Móvil y tablet: la entrada es breve para no retrasar el contenido principal (LCP). */
+@media (max-width: 1023px) {
+  .hero-rise {
+    transition-duration: 500ms;
+    transition-delay: calc(var(--rise-delay, 0ms) * 0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}
+
 /* Difumina los bordes recortados del medio rostro (inferior e izquierdo). */
 .fade-edges {
   -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 96%),

@@ -76,6 +76,13 @@ describe('rutas', () => {
     })
   })
 
+  it('derecho médico muestra su fotografía (imagen_6) con texto alternativo', () => {
+    const { container } = renderAt('/derecho-medico')
+    const img = container.querySelector('img[src="/images/imagen_6.webp"]')
+    expect(img).not.toBeNull()
+    expect(img?.getAttribute('alt')).toMatch(/Lina María Ochoa Figueroa/)
+  })
+
   it('todas las imágenes tienen texto alternativo', () => {
     for (const { to } of mainNavigation) {
       const { container, unmount } = renderAt(to)

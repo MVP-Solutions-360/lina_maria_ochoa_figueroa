@@ -1,12 +1,9 @@
+import { pageMeta } from '../content/pages'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { Button } from '../components/ui/Button'
 
 export default function NotFoundPage() {
-  usePageMeta({
-    title: 'Página no encontrada',
-    description: 'La página que buscas no existe o fue movida.',
-    path: '/404',
-  })
+  usePageMeta(pageMeta.notFound)
 
   return (
     <section className="section-y">
