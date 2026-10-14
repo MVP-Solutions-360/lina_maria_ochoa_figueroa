@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight } from 'lucide-react'
+import { logos } from '../../config/images'
 import { mainNavigation } from '../../content/navigation'
-import { privacy, site, whatsapp } from '../../config/site'
+import { privacy, site, socialGroups, whatsapp, type SocialNetwork } from '../../config/site'
+import { FacebookIcon, InstagramIcon, WhatsAppIcon } from '../ui/BrandIcons'
 import { WhatsAppButton } from './WhatsAppButton'
 
 const currentYear = new Date().getFullYear()
+
+const socialIcons: Record<SocialNetwork, typeof InstagramIcon> = {
+  instagram: InstagramIcon,
+  facebook: FacebookIcon,
+  whatsapp: WhatsAppIcon,
+}
 
 export function SiteFooter() {
   return (
@@ -12,7 +20,17 @@ export function SiteFooter() {
       <div className="container-editorial py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <p className="font-serif text-3xl">{site.name}</p>
+            <Link to="/" className="inline-block">
+              <img
+                src={logos.footer.src}
+                alt={logos.footer.alt}
+                width={logos.footer.width}
+                height={logos.footer.height}
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-44 sm:w-48 lg:w-52"
+              />
+            </Link>
             <p className="mt-4 max-w-sm text-[0.9375rem] leading-relaxed text-band-muted">{site.tagline}</p>
             <p className="mt-2 text-[0.9375rem] text-band-muted">{site.location}</p>
           </div>
@@ -63,6 +81,37 @@ export function SiteFooter() {
         </div>
 
         <div className="rule mt-14" />
+        <div className="mt-10 grid gap-10 sm:grid-cols-2">
+          {socialGroups.map((group) => (
+            <nav key={group.id} aria-labelledby={`social-${group.id}`}>
+              <p id={`social-${group.id}`} className="eyebrow mb-4">
+                Redes · {group.heading}
+              </p>
+              <ul className="flex flex-wrap gap-3">
+                {group.links.map((link) => {
+                  const Icon = socialIcons[link.network]
+                  return (
+                    <li key={link.network}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex h-12 w-12 items-center justify-center border border-band-line text-band-muted transition-colors hover:border-band-accent hover:text-band-accent"
+                      >
+                        <Icon size={20} />
+                        <span className="sr-only">
+                          {link.label} de {group.heading} (se abre en una pestaña nueva)
+                        </span>
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
+          ))}
+        </div>
+
+        <div className="rule mt-10" />
         <div className="mt-6 flex flex-col gap-3 text-xs text-band-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {currentYear} {site.name}. Todos los derechos reservados.

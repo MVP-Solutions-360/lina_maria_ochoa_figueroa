@@ -41,13 +41,15 @@ export function SiteHeader() {
       <div className="container-editorial flex h-full items-center justify-between gap-6">
         <Link
           to="/"
-          className="flex shrink-0 flex-col whitespace-nowrap leading-none"
-          aria-label={`${site.name}, ir al inicio`}
+          // El nombre accesible es el texto visible (más "ir al inicio" para lectores de pantalla):
+          // así coincide con lo que se ve y cumple "label in name". min-h-11 = área táctil de 44 px.
+          className="flex min-h-11 shrink-0 flex-col justify-center whitespace-nowrap leading-none"
         >
           <span className="font-serif text-[1.0625rem] tracking-tight min-[380px]:text-xl sm:text-[1.375rem]">{site.name}</span>
           <span className="mt-1.5 hidden text-[0.625rem] font-medium uppercase tracking-[0.24em] text-accent sm:block">
             Derecho médico · Salud
           </span>
+          <span className="sr-only"> (ir al inicio)</span>
         </Link>
 
         <nav aria-label="Navegación principal" className="hidden xl:block">

@@ -89,7 +89,8 @@ describe('rutas', () => {
   it('no publica datos privados de la hoja de vida', () => {
     for (const { to } of mainNavigation) {
       const { container, unmount } = renderAt(to)
-      const text = container.ownerDocument.documentElement.innerHTML
+      // Se excluyen los trazos de los SVG: sus coordenadas numéricas no son datos.
+      const text = container.ownerDocument.documentElement.innerHTML.replace(/<path[^>]*>/g, '')
       // Patrones genéricos (sin incluir los datos reales): cédula con o sin puntos,
       // tarjeta profesional y teléfonos con formato "3xx xxx xxxx".
       expect(text).not.toMatch(/\b\d{1,2}[.\s]?\d{3}[.\s]?\d{3}[.\s]?\d{3}\b/)
@@ -102,12 +103,16 @@ describe('rutas', () => {
 
   it('los botones de WhatsApp apuntan a wa.me con el número configurado y sin documentos sensibles', () => {
     renderAt('/')
-    const links = screen.getAllByRole('link', { name: /whatsapp/i })
+    // Los iconos de redes del footer ("WhatsApp de …") enlazan al chat sin mensaje; se prueban aparte.
+    const links = screen.getAllByRole('link', { name: /whatsapp/i }).filter((link) => !/^WhatsApp de /.test(link.textContent ?? ''))
     expect(links.length).toBeGreaterThan(0)
     links.forEach((link) => {
       const url = new URL(link.getAttribute('href') ?? '')
       expect(url.origin + url.pathname).toBe('https://wa.me/573164821047')
-      expect(url.searchParams.get('text')).toMatch(/no enviar documentos ni historias cl/i)
+      const message = url.searchParams.get('text') ?? ''
+      expect(message).toMatch(/^Hola, Lina/)
+      // El primer mensaje nunca debe solicitar historias clínicas ni documentos.
+      expect(message).not.toMatch(/adjunt|env[ií]a(r|me)? (tu|la|el|los)|historia cl[ií]nica/i)
       expect(link).toHaveAttribute('rel', expect.stringContaining('noopener'))
     })
     expect(screen.queryByRole('button', { name: /whatsapp/i })).toBeNull()
@@ -115,8 +120,11 @@ describe('rutas', () => {
 
   it('el header muestra el nombre completo de la marca personal', () => {
     renderAt('/derecho-medico')
-    const home = screen.getByRole('link', { name: /Lina María Ochoa Figueroa, ir al inicio/ })
+    // El nombre accesible incluye el texto visible (regla "label in name") y añade "ir al inicio".
+    const home = screen.getByRole('link', { name: /^Lina María Ochoa Figueroa.*\(ir al inicio\)$/ })
     expect(home).toHaveTextContent('Lina María Ochoa Figueroa')
+    expect(home.className).toMatch(/min-h-11/)
+    expect(home).not.toHaveAttribute('aria-label')
     expect(document.title).not.toMatch(/Ochoa Abogados/)
     expect(document.querySelector('meta[property="og:site_name"]')).toHaveAttribute('content', 'Lina María Ochoa Figueroa')
   })
