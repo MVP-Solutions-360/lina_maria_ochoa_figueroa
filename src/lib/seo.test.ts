@@ -45,7 +45,7 @@ describe('metadatos por ruta', () => {
   })
 
   it('sin dominio configurado no hay URLs absolutas (canonical, og:url, og:image) ni se inventa ninguna', () => {
-    applyPageMeta(pageMeta.home)
+    applyPageMeta(pageMeta.home, '')
     expect(meta('link[rel="canonical"]')).toBeNull()
     expect(meta('meta[property="og:url"]')).toBeNull()
     expect(meta('meta[property="og:image"]')).toBeNull()

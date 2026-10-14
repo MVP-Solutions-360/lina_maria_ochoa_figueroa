@@ -6,7 +6,14 @@ import { OG_IMAGE, SITE_URL, site, socialGroups } from '../config/site'
 import { indexablePages, pageMeta } from '../content/pages'
 import { PRACTICE_START_YEAR, credentialInstitutions } from '../content/professional'
 import { applyPageMeta, JSON_LD_SELECTOR } from './seo'
-import { buildHeadModel, buildRobots, buildSitemap, buildStructuredData, buildTitle } from './seoModel'
+import {
+  buildHeadModel,
+  buildRobots,
+  buildSitemap,
+  buildStructuredData,
+  buildTitle,
+  validateSiteUrl,
+} from './seoModel'
 
 const FAKE = 'https://dominio-de-prueba.example'
 const FORBIDDEN = /aggregateRating|"Review"|"Rating"|FAQPage|LegalService|Attorney|"award"|address|telephone|email|localhost/
@@ -49,8 +56,13 @@ describe('títulos y descripciones', () => {
 })
 
 describe('modelo de <head>', () => {
+  it('SITE_URL es el dominio de producción confirmado y la validación no reporta problemas', () => {
+    expect(SITE_URL).toBe('https://linamariaochoafigueroa.wellezyhub.com')
+    expect(validateSiteUrl(SITE_URL)).toEqual([])
+    expect(SITE_URL).not.toBe(FAKE) // los dominios de prueba nunca van en la configuración de producción
+  })
+
   it('sin dominio no hay URLs absolutas, WebSite ni WebPage, pero sí Person con la Organization de BMQ', () => {
-    expect(SITE_URL).toBe('') // se conserva vacío hasta confirmar el dominio de producción
     const model = buildHeadModel(pageMeta.home, '')
     expect(model.canonical).toBeNull()
     expect(model.metas.find((m) => m.key === 'og:image')!.content).toBeNull()

@@ -4,11 +4,11 @@
  */
 
 /**
- * PENDIENTE: dominio final, con https y SIN barra final. Ej.: 'https://www.ejemplo.com'.
- * Mientras esté vacío no se generan canonical, og:url, og:image, sitemap ni robots.txt (todos
- * requieren URLs absolutas). Al definirlo y recompilar, se generan solos. No inventar el dominio.
+ * Dominio de producción configurado y confirmado (https, SIN barra final). Con él se generan
+ * canonical, og:url, og:image, sitemap.xml y robots.txt al compilar. Si cambia, actualizarlo aquí
+ * y recompilar; build/seoPlugin.ts rechaza valores incoherentes (http, barra final, rutas, localhost).
  */
-export const SITE_URL = ''
+export const SITE_URL = 'https://linamariaochoafigueroa.wellezyhub.com'
 
 /** Imagen de vista previa al compartir enlaces (1200×630, logo propio sobre el carbón de la marca). */
 export const OG_IMAGE = {
