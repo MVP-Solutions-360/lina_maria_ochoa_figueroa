@@ -44,6 +44,7 @@ export function EditorialImage({
         ) : (
           <img
             src={photo.src}
+            srcSet={'srcSet' in photo ? photo.srcSet : undefined}
             alt={photo.alt}
             width={photo.width}
             height={photo.height}
