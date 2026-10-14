@@ -43,15 +43,18 @@ describe('franja de credenciales de la portada', () => {
     expect(detail('Universidad Nacional de Lomas de Zamora')).toBe('Maestría en Derecho Procesal Constitucional')
   })
 
-  it('el hero muestra los 4 logos a color (tema claro; el tema oscuro usa la versión monocroma), con alt, tamaño reservado y archivos locales', () => {
+  it('el hero no muestra logos ni el CEO de BMQ; los 4 logos van discretos en el footer, con alt, tamaño reservado y archivos locales', () => {
     const { container } = renderHome()
     const hero = container.querySelector('section[aria-roledescription="carrusel"]')!
-    const logos = [...hero.querySelectorAll<HTMLImageElement>('img[src^="/images/universidades/"]')]
+    expect(hero.querySelectorAll('img[src^="/images/universidades/"]')).toHaveLength(0)
+    expect(hero.textContent).not.toMatch(/CEO de/)
+    const footer = container.querySelector('footer')!
+    const logos = [...footer.querySelectorAll<HTMLImageElement>('img[src^="/images/universidades/"]')]
     expect(logos.map((img) => img.getAttribute('src'))).toEqual([
-      '/images/universidades/UNAULA_C-160.webp',
-      '/images/universidades/CES_C-160.webp',
-      '/images/universidades/UPB_C-160.webp',
-      '/images/universidades/UNLZ_C-160.webp',
+      '/images/universidades/UNAULA-160.webp',
+      '/images/universidades/CES-160.webp',
+      '/images/universidades/UPB-160.webp',
+      '/images/universidades/UNLZ-160.webp',
     ])
     logos.forEach((img) => {
       expect(img.getAttribute('alt')).toMatch(/^Logotipo de la Universidad/)
