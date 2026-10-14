@@ -3,8 +3,20 @@
  * dominio, el número de WhatsApp y los enlaces externos.
  */
 
-/** Pendiente: definir el dominio final (sin barra final). Ej.: 'https://www.ejemplo.com' */
+/**
+ * PENDIENTE: dominio final, con https y SIN barra final. Ej.: 'https://www.ejemplo.com'.
+ * Mientras esté vacío no se generan canonical, og:url, og:image, sitemap ni robots.txt (todos
+ * requieren URLs absolutas). Al definirlo y recompilar, se generan solos. No inventar el dominio.
+ */
 export const SITE_URL = ''
+
+/** Imagen de vista previa al compartir enlaces (1200×630, logo propio sobre el carbón de la marca). */
+export const OG_IMAGE = {
+  src: '/og-image.jpg',
+  width: 1200,
+  height: 630,
+  alt: 'Logotipo de Lina María Ochoa Figueroa, Derecho médico',
+} as const
 
 /**
  * Pendiente: número profesional de WhatsApp en formato internacional, sólo dígitos

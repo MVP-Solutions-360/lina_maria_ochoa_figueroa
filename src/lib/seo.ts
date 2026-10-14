@@ -1,17 +1,9 @@
-import { SITE_URL, site } from '../config/site'
+import type { PageMetaEntry } from '../content/pages'
+import { buildHeadModel, buildTitle } from './seoModel'
 
-export interface PageMeta {
-  title: string
-  description: string
-  /** Ruta de la página, ej. '/perfil-profesional' */
-  path: string
-  /** Ruta pública de la imagen para Open Graph (se vuelve absoluta sólo si hay SITE_URL) */
-  image?: string
-}
+export type PageMeta = PageMetaEntry
 
-export function buildTitle(title: string): string {
-  return title === site.name ? title : `${title} | ${site.name}`
-}
+export { buildTitle }
 
 function setMeta(attr: 'name' | 'property', key: string, content: string | null) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`)
@@ -41,21 +33,34 @@ function setCanonical(href: string | null) {
   el.setAttribute('href', href)
 }
 
-/** Aplica título, descripción, Open Graph y canónica. Sin dominio configurado no hay URLs absolutas. */
-export function applyPageMeta({ title, description, path, image }: PageMeta) {
-  const fullTitle = buildTitle(title)
-  const url = SITE_URL ? `${SITE_URL}${path === '/' ? '/' : path}` : null
-  const imageUrl = SITE_URL && image ? `${SITE_URL}${image}` : null
+/** Un único bloque JSON-LD: el estático del HTML de compilación se reutiliza, no se duplica. */
+export const JSON_LD_SELECTOR = 'script[type="application/ld+json"][data-seo]'
 
-  document.title = fullTitle
-  setMeta('name', 'description', description)
-  setMeta('property', 'og:title', fullTitle)
-  setMeta('property', 'og:description', description)
-  setMeta('property', 'og:type', 'website')
-  setMeta('property', 'og:locale', site.locale)
-  setMeta('property', 'og:site_name', site.name)
-  setMeta('property', 'og:url', url)
-  setMeta('property', 'og:image', imageUrl)
-  setMeta('name', 'twitter:card', imageUrl ? 'summary_large_image' : 'summary')
-  setCanonical(url)
+function setJsonLd(json: string | null) {
+  let el = document.head.querySelector<HTMLScriptElement>(JSON_LD_SELECTOR)
+  if (json === null) {
+    el?.remove()
+    return
+  }
+  if (!el) {
+    el = document.createElement('script')
+    el.setAttribute('type', 'application/ld+json')
+    el.setAttribute('data-seo', '')
+    document.head.appendChild(el)
+  }
+  el.textContent = json
+}
+
+/**
+ * Aplica título, descripción, Open Graph, Twitter Cards, canónica y JSON-LD al navegar.
+ * Sin dominio configurado (SITE_URL) no se generan URLs absolutas (canónica, og:url, og:image).
+ * Los valores salen de `buildHeadModel`, el mismo modelo que usa el HTML estático de
+ * compilación (build/seoPlugin.ts).
+ */
+export function applyPageMeta(page: PageMeta, siteUrl?: string) {
+  const model = buildHeadModel(page, siteUrl)
+  document.title = model.title
+  model.metas.forEach(({ attr, key, content }) => setMeta(attr, key, content))
+  setCanonical(model.canonical)
+  setJsonLd(model.jsonLd)
 }
