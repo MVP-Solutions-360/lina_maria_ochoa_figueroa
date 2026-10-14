@@ -86,7 +86,7 @@ describe('archivos de despliegue (Docker + Nginx)', () => {
     expect(conf).toMatch(/default\s+"no-cache"/)
     // Sin redirecciones ni dominios propios: el dominio sólo lo conoce la aplicación compilada
     expect(conf).not.toMatch(/return 30[1278]|rewrite |https?:\/\/(?!127\.0\.0\.1)/)
-    expect(conf).not.toContain('wellezyhub')
+    expect(conf).not.toMatch(/wellezyhub|linaochoa/)
   })
 
   it('cada ruta pública se resuelve con try_files a un index.html que el build genera', () => {

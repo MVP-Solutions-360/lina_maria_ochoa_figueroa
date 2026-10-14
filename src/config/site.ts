@@ -4,11 +4,12 @@
  */
 
 /**
- * Dominio de producción configurado y confirmado (https, SIN barra final). Con él se generan
+ * Dominio de producción canónico, configurado y confirmado (https, SIN barra final, sin «www»; el
+ * subdominio anterior de wellezyhub.com ya no se usa para generar URLs). Con él se generan
  * canonical, og:url, og:image, sitemap.xml y robots.txt al compilar. Si cambia, actualizarlo aquí
  * y recompilar; build/seoPlugin.ts rechaza valores incoherentes (http, barra final, rutas, localhost).
  */
-export const SITE_URL = 'https://linamariaochoafigueroa.wellezyhub.com'
+export const SITE_URL = 'https://linaochoa.com'
 
 /** Imagen de vista previa al compartir enlaces (1200×630, logo propio sobre el carbón de la marca). */
 export const OG_IMAGE = {

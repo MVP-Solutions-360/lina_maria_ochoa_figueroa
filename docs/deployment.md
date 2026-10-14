@@ -1,14 +1,21 @@
 # Despliegue en el VPS (Docker + Nginx Proxy Manager)
 
 Sitio estático de Lina María Ochoa Figueroa: Vite compila `dist/` y un contenedor Nginx lo sirve.
-Nginx Proxy Manager (NPM) ya recibe `https://linamariaochoafigueroa.wellezyhub.com` (registro A hacia
-`187.77.5.20`, certificado Let's Encrypt) y lo reenvía a `http://172.17.0.1:3005`. Este procedimiento publica
-el contenedor en ese punto **sin tocar NPM ni otros sitios** del servidor.
+Nginx Proxy Manager (NPM) ya recibe `https://linaochoa.com` (dominio canónico) y `https://www.linaochoa.com`
+(alternativo), ambos con certificado SSL válido, y los reenvía a `http://172.17.0.1:3005`. Este procedimiento
+publica el contenedor en ese punto **sin tocar NPM ni otros sitios** del servidor.
+
+> **Historial del dominio.** El sitio estuvo primero en el subdominio `linamariaochoafigueroa.wellezyhub.com`.
+> Desde el cambio a `linaochoa.com` el sitio genera canonical, Open Graph, JSON-LD, sitemap y robots **solo con
+> `https://linaochoa.com`** (sin `www` y sin el subdominio anterior). Como el HTML es el mismo en todos los
+> nombres, las páginas servidas por `www` o por el subdominio antiguo declaran igualmente el canonical de
+> `linaochoa.com`. Una redirección 301 de `www` (y del subdominio antiguo) hacia `linaochoa.com` es una decisión
+> aparte, que se configura en NPM y no forma parte de este repositorio.
 
 | Elemento | Valor |
 |---|---|
 | Repositorio | `https://github.com/MVP-Solutions-360/lina_maria_ochoa_figueroa.git` (público, rama `main`) |
-| Dominio | `https://linamariaochoafigueroa.wellezyhub.com` |
+| Dominio canónico | `https://linaochoa.com` (alternativo: `https://www.linaochoa.com`) |
 | Servicio / contenedor / imagen | `lina-ochoa-web` |
 | Puerto interno del contenedor | `80` |
 | Publicación en el host | `${LINA_BIND_IP}:${LINA_HOST_PORT}` → por defecto `172.17.0.1:3005` |
@@ -149,18 +156,20 @@ ss -ltn | grep ':3005'      # debe mostrar 172.17.0.1:3005, NO 0.0.0.0:3005 ni [
 ## 7. Verificar por el dominio público
 
 ```bash
-D=https://linamariaochoafigueroa.wellezyhub.com
+D=https://linaochoa.com
 
 curl -sI $D/ | head -n1                                  # HTTP/2 200
 curl -s  $D/ | grep -o '<link rel="canonical" href="[^"]*"'
 curl -s  $D/perfil-profesional | grep -o '<link rel="canonical" href="[^"]*"'
+curl -sI https://www.linaochoa.com/ | head -n1                          # HTTP/2 200 (alternativo)
+curl -s  https://www.linaochoa.com/ | grep -o '<link rel="canonical" href="[^"]*"'   # debe seguir apuntando a https://linaochoa.com/
 curl -s  $D/sitemap.xml | grep -c '<loc>'                # 5
-curl -s  $D/robots.txt                                    # Sitemap: https://linamariaochoafigueroa.wellezyhub.com/sitemap.xml
+curl -s  $D/robots.txt                                    # Sitemap: https://linaochoa.com/sitemap.xml
 curl -s -o /dev/null -w '%{http_code}\n' $D/no-existe     # 404
 curl -s  $D/no-existe | grep -o 'name="robots" content="[^"]*"'   # noindex, follow
 ```
 
-Debe verse el canonical con el **mismo dominio de producción** en cada ruta. Si NPM respondiera 502, ver el apartado
+Debe verse el canonical con **`https://linaochoa.com`** (sin `www`) en cada ruta, también al consultar por `www`. Si NPM respondiera 502, ver el apartado
 de problemas más abajo. En NPM no hace falta cambiar nada si el destino sigue siendo `http://172.17.0.1:3005`;
 conviene tener activados *Block Common Exploits* y *Force SSL*.
 

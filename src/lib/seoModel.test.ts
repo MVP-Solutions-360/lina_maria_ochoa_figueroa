@@ -57,7 +57,10 @@ describe('títulos y descripciones', () => {
 
 describe('modelo de <head>', () => {
   it('SITE_URL es el dominio de producción confirmado y la validación no reporta problemas', () => {
-    expect(SITE_URL).toBe('https://linamariaochoafigueroa.wellezyhub.com')
+    expect(SITE_URL).toBe('https://linaochoa.com')
+    // Canónico sin «www» ni el subdominio anterior
+    expect(new URL(SITE_URL).hostname).toBe('linaochoa.com')
+    expect(SITE_URL).not.toMatch(/www\.|wellezyhub/)
     expect(validateSiteUrl(SITE_URL)).toEqual([])
     expect(SITE_URL).not.toBe(FAKE) // los dominios de prueba nunca van en la configuración de producción
   })
