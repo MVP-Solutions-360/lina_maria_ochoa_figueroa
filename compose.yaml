@@ -1,0 +1,24 @@
+# Servicio independiente para el sitio estático de Lina María Ochoa Figueroa.
+# El puerto interno de Nginx es 80; en el host se publica en LINA_HOST_PORT (3005 por defecto)
+# SOLO en la dirección LINA_BIND_IP, para que únicamente Nginx Proxy Manager lo alcance.
+# Valores configurables: ver .env.example y docs/deployment.md.
+name: lina-ochoa-web
+
+services:
+  lina-ochoa-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lina-ochoa-web:latest
+    container_name: lina-ochoa-web
+    restart: unless-stopped
+    ports:
+      # Sin valor por defecto de IP "abierta": nunca se publica en 0.0.0.0 por descuido.
+      - "${LINA_BIND_IP:-172.17.0.1}:${LINA_HOST_PORT:-3005}:80"
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
