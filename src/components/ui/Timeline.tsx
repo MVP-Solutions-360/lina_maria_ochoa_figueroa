@@ -4,8 +4,8 @@ export interface TimelineItem {
   label: string
   title: string
   description?: string
-  /** Distingue formación (punto vacío) de experiencia (punto lleno) */
-  kind?: 'formación' | 'experiencia'
+  /** Distingue formación (punto vacío) de cualquier tipo de experiencia (punto lleno) */
+  kind?: string
 }
 
 interface TimelineProps {
@@ -22,7 +22,7 @@ export function Timeline({ items, className }: TimelineProps) {
             aria-hidden="true"
             className={cx(
               'absolute -left-[7px] top-2 h-3.5 w-3.5 rounded-full border-2 border-accent bg-bg on-band:border-band-accent on-band:bg-band',
-              item.kind === 'experiencia' && 'bg-accent on-band:bg-band-accent',
+              item.kind && item.kind !== 'formación' && 'bg-accent on-band:bg-band-accent',
             )}
           />
           <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">

@@ -9,6 +9,8 @@ interface SectionHeadingProps {
   className?: string
   titleClassName?: string
   id?: string
+  /** Título y descripción ocupan todo el ancho disponible (por defecto se limita la medida de lectura) */
+  wide?: boolean
 }
 
 export function SectionHeading({
@@ -19,9 +21,10 @@ export function SectionHeading({
   className,
   titleClassName,
   id,
+  wide = false,
 }: SectionHeadingProps) {
   return (
-    <div className={cx('max-w-3xl', className)}>
+    <div className={cx(!wide && 'max-w-3xl', className)}>
       {eyebrow && <p className="eyebrow mb-5">{eyebrow}</p>}
       <Tag
         id={id}
@@ -35,7 +38,12 @@ export function SectionHeading({
         {title}
       </Tag>
       {description && (
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted on-band:text-band-muted sm:text-lg">
+        <p
+          className={cx(
+            'mt-6 text-base leading-relaxed text-muted on-band:text-band-muted sm:text-lg',
+            !wide && 'max-w-2xl',
+          )}
+        >
           {description}
         </p>
       )}
